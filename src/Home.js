@@ -1,10 +1,11 @@
 import React,{Component} from 'react';
 
 class Home extends Component{
+
+    //TODO - Adding messaging functionalities
     render(){
         return(
             <div>
-                //TODO - Adding messaging functionalities
                 <h2>Home</h2>
             </div>
         );
