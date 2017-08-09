@@ -21,7 +21,7 @@ ReactDOM.render(
             <Navbar collapseOnSelect>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <NavLink to="App">Text SMS</NavLink>
+                        <NavLink exact to="App">Text SMS</NavLink>
                     </Navbar.Brand>
                     <Navbar.Toggle />
                 </Navbar.Header>
