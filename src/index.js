@@ -5,11 +5,12 @@ import App from './App';
 import Home from './Home';
 import Login from './Login';
 import SignUp from'./SignUp';
-import {Navbar, Nav, NavItem}from 'react-bootstrap'
+import {Navbar, Nav, NavItem}from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
 import {
     BrowserRouter as Router,
     Route,
-    NavLink,
+    Link
 } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory'
 import registerServiceWorker from './registerServiceWorker';
@@ -21,21 +22,21 @@ ReactDOM.render(
             <Navbar collapseOnSelect>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <NavLink exact to="App">Text SMS</NavLink>
+                        <Link to="/App">Text SMS</Link>
                     </Navbar.Brand>
                     <Navbar.Toggle />
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav>
-                        <NavItem eventKey={1}>
-                            <NavLink exact to="Home">Home</NavLink>
-                        </NavItem>
-                        <NavItem eventKey={2}>
-                            <NavLink exact to="Login" >Login</NavLink>
-                        </NavItem>
-                        <NavItem eventKey="{3}">
-                            <NavLink exact to="SignUp">Signup</NavLink>
-                        </NavItem>
+                        <LinkContainer exact to="/Home">
+                            <NavItem eventKey={1}>Home</NavItem>
+                        </LinkContainer>
+                        <LinkContainer exact to="/Login">
+                            <NavItem eventKey={2}>Login</NavItem>
+                        </LinkContainer>
+                        <LinkContainer exact to="/SignUp">
+                            <NavItem eventKey={3}>SignUp</NavItem>
+                        </LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
