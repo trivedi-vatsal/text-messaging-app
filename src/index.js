@@ -4,17 +4,15 @@ import './index.css';
 import App from './App';
 import Home from './Home';
 import Login from './Login';
-import SignUp from'./SignUp';
-import {Navbar, Nav, NavItem}from 'react-bootstrap';
+import SignUp from './SignUp';
+import {Nav, Navbar, NavItem} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from 'react-router-dom';
+import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory'
 import registerServiceWorker from './registerServiceWorker';
-const history = createBrowserHistory()
+
+const history = createBrowserHistory();
+
 
 ReactDOM.render(
     <Router>
@@ -22,7 +20,7 @@ ReactDOM.render(
             <Navbar collapseOnSelect>
                 <Navbar.Header>
                     <Navbar.Brand>
-                        <Link to="/App">Text SMS</Link>
+                        <Link to="/">Text SMS</Link>
                     </Navbar.Brand>
                     <Navbar.Toggle />
                 </Navbar.Header>
@@ -40,8 +38,8 @@ ReactDOM.render(
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
-            <Route exact path="/App" component={App} history={history}/>
-            <Route path="/Home" component={Home} history={history}/>
+            <Route exact path="/" component={App} history={history}/>
+            <Route path="/Home/" component={Home} history={history}/>
             <Route path="/Login" component={Login} history={history}/>
             <Route path="/SignUp" component={SignUp} history={history}/>
         </div>

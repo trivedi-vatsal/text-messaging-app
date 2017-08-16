@@ -1,56 +1,89 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
-import {Form, FormGroup, FormControl, HelpBlock} from 'react-bootstrap';
+import {Badge, Form, FormControl, FormGroup, HelpBlock, Well} from 'react-bootstrap';
+
 class Login extends Component{
     constructor(props){
         super(props);
+        this.change = this.change.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
         this.state ={
             username:{value: '', isValid: true, message:''},
             password: {value: '', isValid: true, message:''},
+            errorMessage: '',
         };
     }
     change = e =>{
-        var state = this.state;
-        state[e.target.name].value = e.target.value;
-        this.setState(state);
+        e.persist();
+        this.setState(() => {
+            return {
+                [e.target.name]: {
+                    value: e.target.value,
+                }
+            };
+        });
     };
+
     onSubmit = (e) => {
         e.preventDefault();
         this.resetValidationStates();
         if (this.formIsValid()) {
-            axios.post('http://boiling-lowlands-48353.herokuapp.com/verifyLogin', {
-                username:this.state.username.value,
-                password:this.state.password.value
-            })
-                .then(function (response) {
+            const apiUrl = 'http://boiling-lowlands-48353.herokuapp.com/';
+            const method = 'verifyLogin';
+            const payload = {
+                username: this.state.username.value,
+                password: this.state.password.value
+            };
+            axios.post(apiUrl + method, payload)
+                .then((response) => {
                     console.log(response);
+                    if (response.status) {
+                        this.setState(() => {
+                            return {
+                                errorMessage: 'Login successfully',
+                            };
+                        });
+                        this.handleClearForm(e);
+                    }
+                    ;
                 })
-                .catch(function (error) {
+                .catch((error) => {
                     console.log(error);
+                    if (error.status)
+                        this.setState(() => {
+                            return {
+                                errorMessage: 'Please login again',
+                            };
+                        });
                 });
-            this.props.history.push('/Login');
         }
-        console.log(this.state);
     };
 
     formIsValid = () => {
-        let state = this.state;
         let flag = 0;
-        if (state.username.value.length === 0) {
-            state.username.isValid = false;
-            state.username.message = 'Please enter username';
-            this.setState(state);
+        if (this.state.username.value.length === 0) {
+            this.setState(() => {
+                return {
+                    username: {
+                        isValid: false,
+                        message: 'Please enter name',
+                        value: ''
+                    },
+                };
+            });
             flag = 1;
         }
-        else if((state.password.value) === ''){
-            state.password.isValid = false;
-            state.password.value = '';
-            state.password.message = 'Please enter password';
-            this.setState(state);
+        if (this.state.password.value === '') {
+            this.setState(() => {
+                return {
+                    password: {
+                        isValid: false,
+                        message: 'Please enter password',
+                    },
+                };
+            });
             flag = 1;
         }
-        //for Key checking
-        //else if{}
         return flag !== 1;
     };
 
@@ -66,35 +99,45 @@ class Login extends Component{
         this.setState(state);
     };
 
+    handleClearForm = (e) => {
+        this.setState({
+            username: {value: '', isValid: true, message: ''},
+            password: {value: '', isValid: true, message: ''},
+            confirmPassword: {value: '', isValid: true, message: ''},
+        });
+    };
     render(){
         return(
             <div>
                 <h2>Login</h2>
-                <Form>
-                    <FormGroup className={"has-error" ? !this.state.username.isValid: false }>
-                        <FormControl
-                            name="username"
-                            placeholder="Username"
-                            type="text"
-                            value={this.state.username.value}
-                            onChange={e => this.change(e)}
-                        />
-                        <HelpBlock>{this.state.username.message}</HelpBlock>
-                    </FormGroup>
-                    <FormGroup>
-                        <FormControl
-                            name="password"
-                            placeholder="Password"
-                            type="password"
-                            value={this.state.password.value}
-                            onChange={e => this.change(e)}
-                        />
-                        <HelpBlock>{this.state.password.message}</HelpBlock>
-                    </FormGroup>
-                    <button onClick={ e => this.onSubmit(e)}>
-                        Submit
-                    </button>
-                </Form>
+                <Well>
+                    <Badge>{this.state.errorMessage}</Badge><br/><br/>
+                    <Form>
+                        <FormGroup className={"has-error" ? !this.state.username.isValid : false}>
+                            <FormControl
+                                name="username"
+                                placeholder="Username"
+                                type="text"
+                                value={this.state.username.value}
+                                onChange={e => this.change(e)}
+                            />
+                            <HelpBlock>{this.state.username.message}</HelpBlock>
+                        </FormGroup>
+                        <FormGroup>
+                            <FormControl
+                                name="password"
+                                placeholder="Password"
+                                type="password"
+                                value={this.state.password.value}
+                                onChange={e => this.change(e)}
+                            />
+                            <HelpBlock>{this.state.password.message}</HelpBlock>
+                        </FormGroup>
+                        <button onClick={e => this.onSubmit(e)}>
+                            Submit
+                        </button>
+                    </Form>
+                </Well>
             </div>
         );
     }
